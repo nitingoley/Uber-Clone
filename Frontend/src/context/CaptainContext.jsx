@@ -5,17 +5,10 @@ export const CaptainDataContext = createContext();
 
 
 
-export const useCaptain = ()=>{
-    const context = useContext(CaptainContext);
-    if(!context) {
-    throw new Error('useCaptain must be used in within a captainProvider')
-}
-  return context;
-}
 
 
 
-const CaptainContext = () => {
+const CaptainContext = ({children}) => {
 
     const [captain , setCaptain] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
@@ -37,7 +30,9 @@ const CaptainContext = () => {
     };
 
     return (
-    <CaptainDataContext.Provider value={value}>CaptainContext</CaptainDataContext.Provider>
+    <CaptainDataContext.Provider value={value}>
+      {children}
+    </CaptainDataContext.Provider>
   )
 }
 

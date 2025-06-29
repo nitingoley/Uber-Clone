@@ -1,53 +1,54 @@
-import React, { useContext, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import  {CaptainDataContext} from "../context/CaptainContext";
-import axios from 'axios';
-const SingupCaptain = () => {
+import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
+import { CaptainDataContext } from  "../context/CaptainContext";
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios'
 
+const CaptainSignup = () => {
+
+  const navigate = useNavigate()
 
   const [ email, setEmail ] = useState('')
   const [ password, setPassword ] = useState('')
   const [ firstName, setFirstName ] = useState('')
   const [ lastName, setLastName ] = useState('')
+
   const [ vehicleColor, setVehicleColor ] = useState('')
   const [ vehiclePlate, setVehiclePlate ] = useState('')
   const [ vehicleCapacity, setVehicleCapacity ] = useState('')
-  const [ vehicleType, setVehicleType ] = useState('');
+  const [ vehicleType, setVehicleType ] = useState('')
 
 
-  const navigate = useNavigate();
+  const { captain, setCaptain } = React.useContext(CaptainDataContext)
 
 
-  const {captain , setCaptain} = useContext(CaptainDataContext);
-
-  const handleSubmit = async (e)=>{
-    e.preventDefault();
-
+  const submitHandler = async (e) => {
+    e.preventDefault()
     const captainData = {
       fullname: {
         firstname: firstName,
-        lastname : lastName,
+        lastname: lastName
       },
       email: email,
       password: password,
-
       vehicle: {
         color: vehicleColor,
         plate: vehiclePlate,
         capacity: vehicleCapacity,
         vehicleType: vehicleType
       }
-    }  
+    }
 
-     const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/captains/register`, captainData)
-      
-     if(response.status === 201) {
-      const data = response.data;
-      setCaptain(data.captain);
-      localStorage.setItem('token', data.token);
-      navigate('/captain-home');
-     };
-     setEmail('')
+    const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/captains/register`, captainData)
+
+    if (response.status === 201) {
+      const data = response.data
+      setCaptain(data.captain)
+      localStorage.setItem('token', data.token)
+      navigate('/captain-home')
+    }
+
+    setEmail('')
     setFirstName('')
     setLastName('')
     setPassword('')
@@ -55,10 +56,10 @@ const SingupCaptain = () => {
     setVehiclePlate('')
     setVehicleCapacity('')
     setVehicleType('')
-  }
 
+  }
   return (
-      <div className='py-5 px-5 h-screen flex flex-col justify-between'>
+    <div className='py-5 px-5 h-screen flex flex-col justify-between'>
       <div>
         <img className='w-20 mb-3' src="https://www.svgrepo.com/show/505031/uber-driver.svg" alt="" />
 
@@ -178,4 +179,4 @@ const SingupCaptain = () => {
   )
 }
 
-export default SingupCaptain
+export default CaptainSignup;
